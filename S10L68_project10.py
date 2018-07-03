@@ -50,9 +50,18 @@ class Coin:
 
         # to delete an object we invoke "del object_name"
         print("Coin spent ! ")
+
+    #Str method: Will format the output output, so we'll show something understandable for the user
+    def __str__(self):
+
+        #So if the coin is One_euro or Two_Euros we have:
+        if self.original_value >= 1.00:
+            return "{} EUR coin".format(int(self.original_value))
+        else:
+            return "{} Cents coin".format(int(self.original_value*100))
             
 
-class Euro(Coin):  ## as it can be seen, it's inheritating all the states and methods from Coin Class, but we still have to define some values like self.clean_colour
+class One_euro(Coin):  ## as it can be seen, it's inheritating all the states and methods from Coin Class, but we still have to define some values like self.clean_colour
 
     # We define our constructor for Euro objects
     def __init__(self):
@@ -75,7 +84,13 @@ class Euro(Coin):  ## as it can be seen, it's inheritating all the states and me
         super().__init__(**data) ### This will call the Super class, or parent class constructor, and we'll pass our data unpacked to it (meaning key=value for every element of the data )
         # And this is why we have the **kwarks in the constructor of the parent class (we pack back the argument passed)
 
+        # As One_euro coin is silver, it's not getting rusted, so we will have to use Polimorphism to change a bit the rust method in the abstract class, so we re-write it here:
+        def rust(self):
+            self.colour = self.clean_colour # we set the colour even if rusted function is marked to the normal coin colour.
 
+        # so since there is no rust, also thre is no difference with cleaning.
+        def clean(self):
+            self.colour = self.clean_colour
         
 
 class One_cent(Coin):  ## One cent coint
@@ -100,6 +115,8 @@ class One_cent(Coin):  ## One cent coint
         
         super().__init__(**data) ### This will call the Super class, or parent class constructor, and we'll pass our data unpacked to it (meaning key=value for every element of the data )
         # And this is why we have the **kwarks in the constructor of the parent class (we pack back the argument passed)
+
+        
 
 
 class Two_cents(Coin):  ## One cent coint
@@ -243,8 +260,8 @@ print("")
 print("")
 print("")
 print("")
-coin1 = Euro()
-coin2 = Euro()
+coin1 = One_euro()
+coin2 = One_euro()
 print("Type of coin1 is: ",type(coin1))
 print("Type of coin2 is: ",type(coin2))
 print("For example for the coin1 we have: coin1.colour = {} and coin1.value = {}".format(coin1.colour,str(coin1.value)))
@@ -253,4 +270,13 @@ print("For the coin2 we have: coin2.colour = {} and coin2.value = {}".format(coi
 # we rust the coin2
 coin2.rust() # we call the method
 print("So we can rust the coin2 and coin2.colour will be:  ",coin2.colour)
+
+### We can also create a list of coins :
+
+coins = [ One_cent(), Two_cents(), Five_cents(), Ten_cents(), Twenty_cents(), Fifty_cents(), One_euro(), Two_euros() ]
+
+for coin in coins:
+    arguments = [ coin, coin.colour,coin.value, coin.diameter, coin.thickness, coin.number_edges, coin.mass ]
+    string = "\n{}\ncolour: {} \nvalue: {} E\nDiameter: {}mm\nThickness: {}mm\nNumber of Edges: {} \nMass: {}gr".format(*arguments)
+    print(string)
 
